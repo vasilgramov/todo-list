@@ -48,17 +48,20 @@
         </div>
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
             <h1>My To-Do List</h1>
-            <a href="" class="text-gray-dark">
+
+            <a id="showTaskMenu" href="#" class="text-gray-dark">
                 + Add Task
             </a>
 
-            <div class="row">
-                <input id="newInputItem" class="form-control col-sm-9" placeholder="e.g. Read the news"/>
-                <input id="newInputDate" type="date" class="form-control col-sm-3" placeholder="e.g. 2017/02/15 "/>
-            </div>
-            <div class="row">
-                <a id="btnSave" href="#" class="btn btn-outline-secondary">Save</a>
-                <a id="btnCancel" href="#" class="btn btn-outline-secondary">Cancel</a>
+            <div id="taskMenu">
+                <div class="row">
+                    <input id="newInputItem" class="form-control col-sm-9" placeholder="e.g. Read the news"/>
+                    <input id="newInputDate" type="date" class="form-control col-sm-3" placeholder="e.g. 2017/02/15 "/>
+                </div>
+                <div class="row">
+                    <a id="btnSave" href="#" class="btn btn-outline-secondary">Save</a>
+                    <a id="btnCancel" href="#" class="btn btn-outline-secondary">Cancel</a>
+                </div>
             </div>
         </main>
     </div>
@@ -68,4 +71,23 @@
 
 <script th:src="@{jquery/jquery.min.js}"></script>
 <script th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+
+<script>
+    
+    $(() => {
+        $('#btnCancel').click(hideTaskMenu);
+        $('#showTaskMenu').click(showTaskMenu);
+
+        hideTaskMenu();
+    });
+    
+    function hideTaskMenu() {
+        $('#taskMenu').hide();
+    }
+
+    function showTaskMenu() {
+        $('#taskMenu').show();
+    }
+
+</script>
 </html>
