@@ -10,4 +10,6 @@ public interface TaskService {
     ViewTask addTask(AddTask addTask);
 
     List<ViewTask> getAllTasks();
+
+    List<ViewTask> getTasksByCategoryName(String categoryName);
 }

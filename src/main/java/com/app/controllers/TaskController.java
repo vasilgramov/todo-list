@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,5 +36,12 @@ public class TaskController {
     public ResponseEntity<ViewTask> addTask(@RequestBody AddTask addTask) {
         ViewTask viewTask = this.taskService.addTask(addTask);
         return new ResponseEntity<>(viewTask, HttpStatus.OK);
+    }
+
+    @GetMapping("/category={categoryName}")
+    public ResponseEntity<List<ViewTask>> getTasksByCategoryName(@PathVariable String categoryName) {
+        List<ViewTask> viewTasks = this.taskService.getTasksByCategoryName(categoryName);
+
+        return new ResponseEntity<List<ViewTask>>(viewTasks, HttpStatus.OK);
     }
 }

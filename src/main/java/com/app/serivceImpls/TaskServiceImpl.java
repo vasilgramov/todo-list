@@ -55,4 +55,16 @@ public class TaskServiceImpl implements TaskService {
 
         return viewTasks;
     }
+
+    @Override
+    public List<ViewTask> getTasksByCategoryName(String categoryName) {
+        List<Task> all = this.taskRepository.findAllByCategoryName(categoryName);
+        List<ViewTask> viewTasks = new ArrayList<>();
+
+        for (Task t : all) {
+            viewTasks.add(this.modelMapper.map(t, ViewTask.class));
+        }
+
+        return viewTasks;
+    }
 }

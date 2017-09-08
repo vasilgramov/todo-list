@@ -5,7 +5,7 @@ $(() => {
     $('#btnSave').click(addTask);
 
     loadCategories();
-    loadTasks();
+    // loadTasks();
 
     hideTaskDiv();
 });
@@ -18,8 +18,10 @@ function showTaskDiv() {
     $('#taskDiv').show();
 }
 
-function displayError(error) {
-    console.log("ERROR");
+function displayError(message) {
+    let errBox = $('#errorBox');
+    errBox.text(message).show();
+    setTimeout(() => errBox.hide(), 3000)
 }
 
 function loadCategories() {
@@ -47,7 +49,15 @@ function appendCategories(categories) {
 function selectCategory() {
     deselectSelectedCategory();
 
-    $(this).addClass('active')
+    $(this).addClass('active');
+
+    let categoryName = $(this).text();
+    $.ajax({
+        method: 'GET',
+        url: `/tasks/category=${categoryName}`,
+        success: appendTasks,
+        error: displayError
+    });
 }
 
 function deselectSelectedCategory() {
@@ -62,6 +72,11 @@ function addTask() {
     let taskDeadline = taskDeadlineInput.val();
     let taskCategoryName = getSelectedCategory();
 
+    if (taskCategoryName === '') {
+        displayError('Select a category!');
+        return;
+    }
+
     let todoTask = {
         name: taskName,
         deadline: taskDeadline,
@@ -73,13 +88,13 @@ function addTask() {
         url: '/tasks/add',
         data: JSON.stringify(todoTask),
         contentType: 'application/json',
-        success: loadTask,
+        success: appendAddedTask,
         error: displayError
     });
 }
 
-function loadTask(task) {
-    let name = task.name;
+function appendAddedTask(task) {
+    let name = task['name'];
     let deadline = formatDate(task['deadline']);
 
     $('#todoTasks')
@@ -108,5 +123,30 @@ function getSelectedCategory() {
 }
 
 function loadTasks() {
-    
+    $.ajax({
+        method: 'GET',
+        url: '/tasks',
+        success: appendTasks,
+        error: displayError
+    });
+}
+
+function appendTasks(tasks) {
+    let tasksSelector = $('#todoTasks');
+    tasksSelector.empty();
+
+    for (let task of tasks) {
+        let name = task['name'];
+        let deadline = formatDate(task['deadline']);
+
+        tasksSelector
+            .append($('<div>').addClass('row').append(
+                $('<input/>')
+                    .addClass('updateNameClass form-control col-sm-9')
+                    .val(name))
+                .append(
+                    $('<input/>')
+                        .addClass('updateDeadlineClass form-control col-sm-3')
+                        .val(deadline)));
+    }
 }
