@@ -33,27 +33,22 @@
     <div class="container-fluid">
         <div class="row">
             <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
-                <ul class="nav nav-pills flex-column red">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Category One <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Category Two</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Category Three</a>
-                    </li>
+
+                <ul id="categoriesUL" class="nav nav-pills flex-column red">
+
+                    <!--categories-->
+
                 </ul>
             </nav>
         </div>
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
             <h1>My To-Do List</h1>
 
-            <a id="showTaskMenu" href="#" class="text-gray-dark">
+            <a id="showTaskDiv" href="#" class="text-gray-dark">
                 + Add Task
             </a>
 
-            <div id="taskMenu">
+            <div id="taskDiv">
                 <div class="row">
                     <input id="newInputItem" class="form-control col-sm-9" placeholder="e.g. Read the news"/>
                     <input id="newInputDate" type="date" class="form-control col-sm-3" placeholder="e.g. 2017/02/15 "/>
@@ -75,18 +70,58 @@
 <script>
     
     $(() => {
-        $('#btnCancel').click(hideTaskMenu);
-        $('#showTaskMenu').click(showTaskMenu);
 
-        hideTaskMenu();
+        $('#btnCancel').click(hideTaskDiv);
+        $('#showTaskDiv').click(showTaskDiv);
+
+        loadCategories();
+
+
+        hideTaskDiv();
     });
     
-    function hideTaskMenu() {
-        $('#taskMenu').hide();
+    function hideTaskDiv() {
+        $('#taskDiv').hide();
     }
 
-    function showTaskMenu() {
-        $('#taskMenu').show();
+    function showTaskDiv() {
+        $('#taskDiv').show();
+    }
+
+    function catchError(error) {
+        // TODO: DISPLAY ERROR
+    }
+    
+    function loadCategories() {
+        $.ajax({
+            method: 'GET',
+            url: '/categories/',
+            success: appendCategories,
+            error: catchError
+        });
+    }
+    
+    function appendCategories(categories) {
+        let categoriesUL = $('#categoriesUL');
+
+        for (let c of categories) {
+            categoriesUL.append(
+                $('<li class="nav-item"></li>')
+                    .append($('<a class="nav-link" href="#"></a>')
+                        .text(c['name'])
+                        .click(selectCategory))
+            );
+        }
+    }
+
+    function selectCategory() {
+        deselectSelectedCategory();
+
+        $(this).addClass('active')
+    }
+    
+    function deselectSelectedCategory() {
+        $('#categoriesUL').find('li .active').removeClass('active');
     }
 
 </script>

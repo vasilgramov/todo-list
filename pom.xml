@@ -8,8 +8,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>todo_app</name>
-	<description>TODO applications</description>
+	<name>todo_list</name>
+	<description>todo list</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -49,7 +49,7 @@
 
         <dependency>
             <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <artifactId>    mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
 
