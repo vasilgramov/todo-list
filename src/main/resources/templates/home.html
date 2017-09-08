@@ -39,6 +39,7 @@
                     <!--categories-->
 
                 </ul>
+
             </nav>
         </div>
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
@@ -49,15 +50,25 @@
             </a>
 
             <div id="taskDiv">
+
                 <div class="row">
-                    <input id="newInputItem" class="form-control col-sm-9" placeholder="e.g. Read the news"/>
-                    <input id="newInputDate" type="date" class="form-control col-sm-3" placeholder="e.g. 2017/02/15 "/>
+                    <input id="newTaskName" class="form-control col-sm-9" placeholder="e.g. Read the news"/>
+                    <input id="newTaskDeadline" type="date" class="form-control col-sm-3" placeholder="e.g. 2017/02/15 "/>
                 </div>
+
                 <div class="row">
                     <a id="btnSave" href="#" class="btn btn-outline-secondary">Save</a>
                     <a id="btnCancel" href="#" class="btn btn-outline-secondary">Cancel</a>
                 </div>
+
             </div>
+
+            <br>
+            <br>
+
+            <p class="text-gray-dark">Tasks</p>
+            <div id="todoTasks"></div>
+
         </main>
     </div>
 </main>
@@ -67,62 +78,6 @@
 <script th:src="@{jquery/jquery.min.js}"></script>
 <script th:src="@{bootstrap/js/bootstrap.min.js}"></script>
 
-<script>
-    
-    $(() => {
+<script th:src="@{scripts/app.js}"></script>
 
-        $('#btnCancel').click(hideTaskDiv);
-        $('#showTaskDiv').click(showTaskDiv);
-
-        loadCategories();
-
-
-        hideTaskDiv();
-    });
-    
-    function hideTaskDiv() {
-        $('#taskDiv').hide();
-    }
-
-    function showTaskDiv() {
-        $('#taskDiv').show();
-    }
-
-    function catchError(error) {
-        // TODO: DISPLAY ERROR
-    }
-    
-    function loadCategories() {
-        $.ajax({
-            method: 'GET',
-            url: '/categories/',
-            success: appendCategories,
-            error: catchError
-        });
-    }
-    
-    function appendCategories(categories) {
-        let categoriesUL = $('#categoriesUL');
-
-        for (let c of categories) {
-            categoriesUL.append(
-                $('<li class="nav-item"></li>')
-                    .append($('<a class="nav-link" href="#"></a>')
-                        .text(c['name'])
-                        .click(selectCategory))
-            );
-        }
-    }
-
-    function selectCategory() {
-        deselectSelectedCategory();
-
-        $(this).addClass('active')
-    }
-    
-    function deselectSelectedCategory() {
-        $('#categoriesUL').find('li .active').removeClass('active');
-    }
-
-</script>
 </html>
