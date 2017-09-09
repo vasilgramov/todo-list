@@ -3,6 +3,7 @@ package com.app.serivceImpls;
 import com.app.entities.Category;
 import com.app.entities.Task;
 import com.app.models.bindingModels.AddTask;
+import com.app.models.bindingModels.UpdateTask;
 import com.app.models.viewModels.ViewTask;
 import com.app.repositories.TaskRepository;
 import com.app.services.CategoryService;
@@ -41,6 +42,7 @@ public class TaskServiceImpl implements TaskService {
         this.taskRepository.saveAndFlush(task);
 
         ViewTask viewTask = this.modelMapper.map(task, ViewTask.class);
+        viewTask.setId(task.getId());
         return viewTask;
     }
 
@@ -66,5 +68,16 @@ public class TaskServiceImpl implements TaskService {
         }
 
         return viewTasks;
+    }
+
+    @Override
+    public void updateTask(UpdateTask updateTask) {
+        System.out.println(updateTask.getId() + " " + updateTask.getName() + " " + updateTask.getDeadline().toString());
+        Task task = this.taskRepository.findById(updateTask.getId());
+
+        task.setName(updateTask.getName());
+        task.setDeadline(updateTask.getDeadline());
+
+        this.taskRepository.saveAndFlush(task);
     }
 }

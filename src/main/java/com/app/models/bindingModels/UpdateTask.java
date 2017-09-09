@@ -1,8 +1,8 @@
-package com.app.models.viewModels;
+package com.app.models.bindingModels;
 
 import java.util.Date;
 
-public class ViewTask {
+public class UpdateTask {
 
     private long id;
 
@@ -10,7 +10,7 @@ public class ViewTask {
 
     private Date deadline;
 
-    public ViewTask() {
+    public UpdateTask() {
         super();
     }
 

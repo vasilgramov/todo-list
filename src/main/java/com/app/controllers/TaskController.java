@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 import com.app.models.bindingModels.AddTask;
+import com.app.models.bindingModels.UpdateTask;
 import com.app.models.viewModels.ViewTask;
 import com.app.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,10 @@ public class TaskController {
         List<ViewTask> viewTasks = this.taskService.getTasksByCategoryName(categoryName);
 
         return new ResponseEntity<List<ViewTask>>(viewTasks, HttpStatus.OK);
+    }
+
+    @PutMapping("/edit")
+    public void editTask(@RequestBody UpdateTask updateTask) {
+        this.taskService.updateTask(updateTask);
     }
 }

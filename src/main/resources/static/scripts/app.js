@@ -98,10 +98,13 @@ function appendAddedTask(task) {
     let deadline = formatDate(task['deadline']);
 
     $('#todoTasks')
-        .append($('<div>').addClass('row').append(
-            $('<input/>')
-                .addClass('updateNameClass form-control col-sm-9')
-                .val(name))
+        .append($('<div>')
+            .attr('data-id', task['id'])
+            .addClass('row')
+            .append(
+                $('<input/>')
+                    .addClass('updateNameClass form-control col-sm-9')
+                    .val(name))
             .append(
                 $('<input/>')
                     .addClass('updateDeadlineClass form-control col-sm-3')
@@ -122,15 +125,6 @@ function getSelectedCategory() {
     return $('#categoriesUL').find('li .active').text();
 }
 
-function loadTasks() {
-    $.ajax({
-        method: 'GET',
-        url: '/tasks',
-        success: appendTasks,
-        error: displayError
-    });
-}
-
 function appendTasks(tasks) {
     let tasksSelector = $('#todoTasks');
     tasksSelector.empty();
@@ -140,7 +134,9 @@ function appendTasks(tasks) {
         let deadline = formatDate(task['deadline']);
 
         tasksSelector
-            .append($('<div>').addClass('row').append(
+            .append($('<div>')
+                .addClass('row')
+                .append(
                 $('<input/>')
                     .addClass('updateNameClass form-control col-sm-9')
                     .val(name))
@@ -148,17 +144,35 @@ function appendTasks(tasks) {
                     $('<input/>')
                         .addClass('updateDeadlineClass form-control col-sm-3')
                         .val(deadline))
-                .on('change', function () {
-                    var currentDOMItem = $(this);
-                    var toDoItem = {};
-                    toDoItem.id = currentDOMItem.attr('itemid');
-                    toDoItem.name = currentDOMItem.find('.updateNameClass').val();
-                    toDoItem.deadline = currentDOMItem.find('.updateDeadlineClass').val();
-                    updateItem(toDoItem);
-                }));
+                .on('change', editTask)
+            );
     }
-    
-    function updateItem(item) {
-        
-    }
+}
+
+function editTask() {
+    let currentDOMTask = $(this);
+
+    let taskId = currentDOMTask.attr('data-id');
+    let taskName = currentDOMTask.find('.updateNameClass').val();
+    let taskDeadline = currentDOMTask.find('.updateDeadlineClass').val();
+
+    let toDoItem = {
+        id: taskId,
+        name: taskName,
+        deadline: taskDeadline
+    };
+
+    console.log(toDoItem);
+    updateItem(toDoItem);
+}
+
+function updateItem(item) {
+    $.ajax({
+        method: 'PUT',
+        url: '/tasks/edit',
+        data: JSON.stringify(item),
+        contentType: 'application/json',
+        success: appendAddedTask,
+        error: displayError
+    });
 }
