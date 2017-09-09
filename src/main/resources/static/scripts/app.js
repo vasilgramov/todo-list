@@ -147,6 +147,18 @@ function appendTasks(tasks) {
                 .append(
                     $('<input/>')
                         .addClass('updateDeadlineClass form-control col-sm-3')
-                        .val(deadline)));
+                        .val(deadline))
+                .on('change', function () {
+                    var currentDOMItem = $(this);
+                    var toDoItem = {};
+                    toDoItem.id = currentDOMItem.attr('itemid');
+                    toDoItem.name = currentDOMItem.find('.updateNameClass').val();
+                    toDoItem.deadline = currentDOMItem.find('.updateDeadlineClass').val();
+                    updateItem(toDoItem);
+                }));
+    }
+    
+    function updateItem(item) {
+        
     }
 }
