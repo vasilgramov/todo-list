@@ -37,6 +37,7 @@
 <main>
 
     <div class="container-fluid">
+
         <div class="row">
             <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
                 <p>Categories</p>
@@ -49,7 +50,7 @@
             </nav>
         </div>
 
-        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
             <h1>My To-Do List</h1>
 
             <a id="showTaskDiv" href="#" class="text-gray-dark">
@@ -76,9 +77,14 @@
             <p class="text-gray-dark">Tasks</p>
             <div id="todoTasks"></div>
 
-        </main>
-    </div>
+            <hr>
 
+            <p class="text-gray-dark">Done Tasks</p>
+            <div id="doneTasks"></div>
+
+        </div>
+
+    </div>
 </main>
 
 </body>

@@ -47,7 +47,15 @@ public class TaskController {
     }
 
     @PutMapping("/edit")
-    public void editTask(@RequestBody UpdateTask updateTask) {
+    public ResponseEntity editTask(@RequestBody UpdateTask updateTask) {
         this.taskService.updateTask(updateTask);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{taskId}")
+    public ResponseEntity delete(@PathVariable long taskId){
+        this.taskService.deleteById(taskId);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

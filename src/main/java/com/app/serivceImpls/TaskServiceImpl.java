@@ -72,12 +72,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void updateTask(UpdateTask updateTask) {
-        System.out.println(updateTask.getId() + " " + updateTask.getName() + " " + updateTask.getDeadline().toString());
         Task task = this.taskRepository.findById(updateTask.getId());
 
         task.setName(updateTask.getName());
         task.setDeadline(updateTask.getDeadline());
 
         this.taskRepository.saveAndFlush(task);
+    }
+
+    @Override
+    public void deleteById(long taskId) {
+        this.taskRepository.delete(taskId);
     }
 }

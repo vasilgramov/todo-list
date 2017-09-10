@@ -2,7 +2,7 @@ $(() => {
 
     $('#btnCancel').click(hideTaskDiv);
     $('#showTaskDiv').click(showTaskDiv);
-    $('#btnSave').click(addTask);
+    $('#btnSave').click(createTask);
 
     loadCategories();
     // loadTasks();
@@ -52,9 +52,13 @@ function selectCategory() {
     $(this).addClass('active');
 
     let categoryName = $(this).text();
+    getTasksByCategory(categoryName);
+}
+
+function getTasksByCategory(category) {
     $.ajax({
         method: 'GET',
-        url: `/tasks/category=${categoryName}`,
+        url: `/tasks/category=${category}`,
         success: appendTasks,
         error: displayError
     });
@@ -64,7 +68,7 @@ function deselectSelectedCategory() {
     $('#categoriesUL').find('li .active').removeClass('active');
 }
 
-function addTask() {
+function createTask() {
     let taskInput = $('#newTaskName');
     let taskDeadlineInput = $('#newTaskDeadline');
 
@@ -83,6 +87,10 @@ function addTask() {
         category: taskCategoryName
     };
 
+    addTask(todoTask);
+}
+
+function addTask(todoTask) {
     $.ajax({
         type: 'POST',
         url: '/tasks/add',
@@ -98,17 +106,24 @@ function appendAddedTask(task) {
     let deadline = formatDate(task['deadline']);
 
     $('#todoTasks')
-        .append($('<div>')
-            .attr('data-id', task['id'])
-            .addClass('row')
-            .append(
-                $('<input/>')
-                    .addClass('updateNameClass form-control col-sm-9')
-                    .val(name))
-            .append(
-                $('<input/>')
-                    .addClass('updateDeadlineClass form-control col-sm-3')
-                    .val(deadline)));
+        .append(
+            $('<div>')
+                .attr('data-id', task['id'])
+                .addClass('row')
+                .append(
+                    $('<input type="checkbox">')
+                        .click()
+                )
+                .append(
+                    $('<input/>')
+                        .addClass('updateNameClass form-control col-sm-8')
+                        .val(name))
+                .append(
+                    $('<input/>')
+                        .addClass('updateDeadlineClass form-control col-sm-3')
+                        .val(deadline))
+                .on('change', editTask)
+            );
 
     hideTaskDiv();
 }
@@ -121,6 +136,15 @@ function formatDate(dateInNumber) {
     return year + '/' + month + '/' + day;
 }
 
+function parseDate(dateAsString) {
+    let tokens = dateAsString.split('/');
+    let year = tokens[0];
+    let month = tokens[1];
+    let day = tokens[2];
+
+    return new Date(year, month, day);
+}
+
 function getSelectedCategory() {
     return $('#categoriesUL').find('li .active').text();
 }
@@ -130,22 +154,30 @@ function appendTasks(tasks) {
     tasksSelector.empty();
 
     for (let task of tasks) {
+        let id  =task['id'];
         let name = task['name'];
         let deadline = formatDate(task['deadline']);
 
         tasksSelector
-            .append($('<div>')
-                .addClass('row')
-                .append(
-                $('<input/>')
-                    .addClass('updateNameClass form-control col-sm-9')
-                    .val(name))
-                .append(
-                    $('<input/>')
-                        .addClass('updateDeadlineClass form-control col-sm-3')
-                        .val(deadline))
-                .on('change', editTask)
-            );
+            .append(
+                $('<div>')
+                    .attr('data-id', id)
+                    .addClass('row')
+                    .append(
+                        $('<input type="checkbox">')
+                            .click(() => alert('CLICKED'))
+                    )
+                    .append(
+                        $('<input/>')
+                            .addClass('updateNameClass form-control col-sm-8')
+                            .val(name))
+                    .append(
+                        $('<input/>')
+                            .addClass('updateDeadlineClass form-control col-sm-3')
+                            .val(deadline))
+                    .on('change', editTask)
+                    .on('keyup', removeTask)
+                );
     }
 }
 
@@ -154,7 +186,7 @@ function editTask() {
 
     let taskId = currentDOMTask.attr('data-id');
     let taskName = currentDOMTask.find('.updateNameClass').val();
-    let taskDeadline = currentDOMTask.find('.updateDeadlineClass').val();
+    let taskDeadline = parseDate(currentDOMTask.find('.updateDeadlineClass').val());
 
     let toDoItem = {
         id: taskId,
@@ -162,7 +194,6 @@ function editTask() {
         deadline: taskDeadline
     };
 
-    console.log(toDoItem);
     updateItem(toDoItem);
 }
 
@@ -172,7 +203,24 @@ function updateItem(item) {
         url: '/tasks/edit',
         data: JSON.stringify(item),
         contentType: 'application/json',
-        success: appendAddedTask,
         error: displayError
+    });
+}
+
+function removeTask(e) {
+    if (e.which === 27) {
+        let domTask = $(this);
+        let taskId = domTask.attr('data-id');
+
+        deleteTask(taskId);
+
+        domTask.remove();
+    }
+}
+
+function deleteTask(id) {
+    $.ajax({
+        type: 'DELETE',
+        url: '/tasks/delete/' + id
     });
 }
