@@ -127,3 +127,12 @@ background-color: crimson;
 #errorBox {
     background: #F50;
 }
+
+.checkbox {
+    position: relative;
+    top: 13px;
+}
+
+.updateNameClass, .updateDeadlineClass {
+    margin-bottom: .5rem;
+}

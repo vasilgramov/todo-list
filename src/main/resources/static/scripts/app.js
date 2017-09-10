@@ -4,8 +4,8 @@ $(() => {
     $('#showTaskDiv').click(showTaskDiv);
     $('#btnSave').click(createTask);
 
-    loadCategories();
-    // loadTasks();
+    loadAllCategories();
+    loadAllTasks();
 
     hideTaskDiv();
 });
@@ -24,7 +24,7 @@ function displayError(message) {
     setTimeout(() => errBox.hide(), 3000)
 }
 
-function loadCategories() {
+function loadAllCategories() {
     $.ajax({
         method: 'GET',
         url: '/categories',
@@ -36,6 +36,15 @@ function loadCategories() {
 function appendCategories(categories) {
     let categoriesUL = $('#categoriesUL');
 
+    // all
+    categoriesUL.append(
+        $('<li class="nav-item"></li>')
+            .append($('<a class="nav-link active" href="#"></a>')
+                .text('All')
+                .click(selectCategory))
+    );
+
+    // by category
     for (let c of categories) {
         categoriesUL.append(
             $('<li class="nav-item"></li>')
@@ -56,10 +65,15 @@ function selectCategory() {
 }
 
 function getTasksByCategory(category) {
+    if (category === 'All') {
+        loadAllTasks();
+        return;
+    }
+
     $.ajax({
         method: 'GET',
         url: `/tasks/category=${category}`,
-        success: appendTasks,
+        success: loadTasksByCategory,
         error: displayError
     });
 }
@@ -96,23 +110,25 @@ function addTask(todoTask) {
         url: '/tasks/add',
         data: JSON.stringify(todoTask),
         contentType: 'application/json',
-        success: appendAddedTask,
+        success: appendTask,
         error: displayError
     });
 }
 
-function appendAddedTask(task) {
+function appendTask(task) {
+    let id = task['id'];
     let name = task['name'];
     let deadline = formatDate(task['deadline']);
 
     $('#todoTasks')
         .append(
             $('<div>')
-                .attr('data-id', task['id'])
+                .attr('data-id', id)
                 .addClass('row')
                 .append(
                     $('<input type="checkbox">')
-                        .click()
+                        .addClass('checkbox')
+                        .click(() => alert('CLICKED'))
                 )
                 .append(
                     $('<input/>')
@@ -123,6 +139,7 @@ function appendAddedTask(task) {
                         .addClass('updateDeadlineClass form-control col-sm-3')
                         .val(deadline))
                 .on('change', editTask)
+                .on('keyup', removeTask)
             );
 
     hideTaskDiv();
@@ -138,9 +155,9 @@ function formatDate(dateInNumber) {
 
 function parseDate(dateAsString) {
     let tokens = dateAsString.split('/');
-    let year = tokens[0];
-    let month = tokens[1];
-    let day = tokens[2];
+    let year = tokens[0] - 1;
+    let month = tokens[1] - 1;
+    let day = tokens[2] + 1;
 
     return new Date(year, month, day);
 }
@@ -149,35 +166,12 @@ function getSelectedCategory() {
     return $('#categoriesUL').find('li .active').text();
 }
 
-function appendTasks(tasks) {
+function loadTasksByCategory(tasks) {
     let tasksSelector = $('#todoTasks');
     tasksSelector.empty();
 
     for (let task of tasks) {
-        let id  =task['id'];
-        let name = task['name'];
-        let deadline = formatDate(task['deadline']);
-
-        tasksSelector
-            .append(
-                $('<div>')
-                    .attr('data-id', id)
-                    .addClass('row')
-                    .append(
-                        $('<input type="checkbox">')
-                            .click(() => alert('CLICKED'))
-                    )
-                    .append(
-                        $('<input/>')
-                            .addClass('updateNameClass form-control col-sm-8')
-                            .val(name))
-                    .append(
-                        $('<input/>')
-                            .addClass('updateDeadlineClass form-control col-sm-3')
-                            .val(deadline))
-                    .on('change', editTask)
-                    .on('keyup', removeTask)
-                );
+        appendTask(task);
     }
 }
 
@@ -223,4 +217,13 @@ function deleteTask(id) {
         type: 'DELETE',
         url: '/tasks/delete/' + id
     });
+}
+
+function loadAllTasks() {
+    $.ajax({
+        method: 'GET',
+        url: '/tasks',
+        success: loadTasksByCategory,
+        error: displayError
+    })
 }
