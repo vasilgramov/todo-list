@@ -1,13 +1,18 @@
 $(() => {
 
-    $('#btnCancel').click(hideTaskDiv);
     $('#showTaskDiv').click(showTaskDiv);
-    $('#btnSave').click(createTask);
+    $('#btnSaveTask').click(createTask);
+    $('#btnCancelTask').click(hideTaskDiv);
+
+    $('#showCategoryDiv').click(showCategoryDiv);
+    $('#btnSaveCategory').click(createCategory);
+    $('#btnCancelCategory').click(hideCategoryDiv);
 
     loadAllCategories();
     loadAllTasks();
 
     hideTaskDiv();
+    hideCategoryDiv();
 });
 
 function hideTaskDiv() {
@@ -83,12 +88,15 @@ function deselectSelectedCategory() {
 }
 
 function createTask() {
-    let taskInput = $('#newTaskName');
+    let taskNameInput = $('#newTaskName');
     let taskDeadlineInput = $('#newTaskDeadline');
 
-    let taskName = taskInput.val();
+    let taskName = taskNameInput.val();
     let taskDeadline = taskDeadlineInput.val();
     let taskCategoryName = getSelectedCategory();
+
+    taskNameInput.val('');
+    taskDeadlineInput.val('');
 
     if (taskCategoryName === '') {
         displayError('Select a category!');
@@ -101,6 +109,7 @@ function createTask() {
         category: taskCategoryName
     };
 
+    hideTaskDiv();
     addTask(todoTask);
 }
 
@@ -132,7 +141,7 @@ function appendTask(task) {
                 )
                 .append(
                     $('<input/>')
-                        .addClass('updateNameClass form-control col-sm-8')
+                        .addClass('updateNameClass form-control col-sm-5')
                         .val(name))
                 .append(
                     $('<input/>')
@@ -141,8 +150,6 @@ function appendTask(task) {
                 .on('change', editTask)
                 .on('keyup', removeTask)
             );
-
-    hideTaskDiv();
 }
 
 function formatDate(dateInNumber) {
@@ -155,9 +162,9 @@ function formatDate(dateInNumber) {
 
 function parseDate(dateAsString) {
     let tokens = dateAsString.split('/');
-    let year = tokens[0] - 1;
+    let year = tokens[0];
     let month = tokens[1] - 1;
-    let day = tokens[2] + 1;
+    let day = tokens[2];
 
     return new Date(year, month, day);
 }
@@ -176,6 +183,8 @@ function loadTasksByCategory(tasks) {
 }
 
 function editTask() {
+    console.log('EDITING');
+
     let currentDOMTask = $(this);
 
     let taskId = currentDOMTask.attr('data-id');
@@ -226,4 +235,47 @@ function loadAllTasks() {
         success: loadTasksByCategory,
         error: displayError
     })
+}
+
+function showCategoryDiv() {
+    $('#categoryDiv').show();
+}
+
+function hideCategoryDiv() {
+    $('#categoryDiv').hide();
+}
+
+function createCategory() {
+    let categoryInput = $('#newCategoryName');
+    let categoryName = categoryInput.val();
+
+    categoryInput.val('');
+
+    let category = {
+        name: categoryName
+    };
+
+    hideCategoryDiv();
+    addCategory(category);
+}
+
+function addCategory(category) {
+    $.ajax({
+        method: 'POST',
+        url: 'categories/add',
+        data: JSON.stringify(category),
+        contentType: 'application/json',
+        success: appendCategory,
+        error: displayError
+    });
+}
+
+function appendCategory(category) {
+    let categoriesUL = $('#categoriesUL');
+    categoriesUL.append(
+        $('<li class="nav-item"></li>')
+            .append($('<a class="nav-link" href="#"></a>')
+                .text(category['name'])
+                .click(selectCategory))
+    );
 }

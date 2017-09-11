@@ -4,7 +4,7 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-padding-top: 50px;
+    padding-top: 50px;
 }
 
 /*
@@ -12,9 +12,9 @@ padding-top: 50px;
 */
 
 h1 {
-margin-bottom: 20px;
-padding-bottom: 9px;
-border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eee;
 }
 
 /*
@@ -22,37 +22,37 @@ border-bottom: 1px solid #eee;
 */
 
 .sidebar {
-position: fixed;
-top: 51px;
-bottom: 0;
-left: 0;
-z-index: 1000;
-padding: 20px;
-overflow-x: hidden;
-overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-border-right: 1px solid #eee;
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    border-right: 1px solid #eee;
 }
 
 /* Sidebar navigation */
 .sidebar {
-padding-left: 0;
-padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .sidebar .nav {
-margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .sidebar .nav-item {
-width: 100%;
+    width: 100%;
 }
 
 .sidebar .nav-item + .nav-item {
-margin-left: 0;
+    margin-left: 0;
 }
 
 .sidebar .nav-link {
-border-radius: 0;
+    border-radius: 0;
 }
 
 /*
@@ -61,49 +61,53 @@ border-radius: 0;
 
 /* Placeholders */
 .placeholders {
-padding-bottom: 3rem;
+    padding-bottom: 3rem;
 }
 
 .placeholder img {
-padding-top: 1.5rem;
-padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }
 
-.nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active{
-background-color: crimson;
+.nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active {
+    background-color: crimson;
 }
 
-a{
-color: black;
+a {
+    color: black;
 }
 
 a:focus, a:hover {
-color: crimson;
+    color: crimson;
 }
 
 #newInputItem {
-margin-top:  10px;
-margin-bottom:  10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #newInputDate {
-margin-top:  10px;
-margin-bottom:  10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-#btnSave {
-margin-right: 5px;
-background-color: black;
-color: white;
+#btnSaveTask, #btnSaveCategory {
+    position: relative;
+    top: 10px;
+    margin-right: 5px;
+    background-color: #464a4c;
+    color: white;
 }
 
-#btnCancel {
-background-color: white;
-color: black;
+#btnCancelTask, #btnCancelCategory {
+    position: relative;
+    top: 10px;
+    background-color: white;
+    color: black;
 }
 
-#btnSave:hover, #btnCancel:hover{
-background-color: crimson;
+#btnSaveTask:hover, #btnCancelTask:hover, #btnSaveCategory:hover, #btnCancelCategory:hover {
+    background-color: crimson;
 }
 
 #infoBox, #errorBox, #loadingBox {
@@ -135,4 +139,21 @@ background-color: crimson;
 
 .updateNameClass, .updateDeadlineClass {
     margin-bottom: .5rem;
+}
+
+.categoryNav {
+    position: relative;
+    left: 20px;
+    top: 9px;
+}
+
+#categoryDiv {
+    position: relative;
+    left: 10px;
+    top: 17px;
+}
+
+#taskDiv {
+    position: relative;
+    top: 10px;
 }

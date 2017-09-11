@@ -1,6 +1,7 @@
 package com.app.serivceImpls;
 
 import com.app.entities.Category;
+import com.app.models.bindingModels.AddCategory;
 import com.app.models.viewModels.ViewCategory;
 import com.app.repositories.CategoryRepository;
 import com.app.services.CategoryService;
@@ -41,5 +42,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category categoryByName(String name) {
         return this.categoryRepository.findByName(name);
+    }
+
+    @Override
+    public ViewCategory addCategory(AddCategory addCategory) {
+        Category category = this.modelMapper.map(addCategory, Category.class);
+        this.categoryRepository.saveAndFlush(category);
+
+        return this.modelMapper.map(category, ViewCategory.class);
     }
 }

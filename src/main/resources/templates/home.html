@@ -29,6 +29,7 @@
                 <input class="form-control mr-sm-2" placeholder="Search" type="text"/>
 
                 <!--<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>-->
+
             </form>
         </div>
     </nav>
@@ -40,7 +41,21 @@
 
         <div class="row">
             <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
-                <p>Categories</p>
+
+                <a id="showCategoryDiv" href="#" class="categoryNav text-gray-dark">
+                    + Add Category
+                </a>
+
+                <div id="categoryDiv">
+                    <input id="newCategoryName" type="text" placeholder=" Category Name"/>
+                    <a id="btnSaveCategory" href="#" class="btn btn-outline-secondary">Save</a>
+                    <a id="btnCancelCategory" href="#" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+
+                <br>
+                <br>
+
+                <p class="categoryNav">Categories</p>
                 <ul id="categoriesUL" class="nav nav-pills flex-column red">
 
                     <!--categories-->
@@ -60,13 +75,13 @@
             <div id="taskDiv">
 
                 <div class="row">
-                    <input id="newTaskName" class="form-control col-sm-9" placeholder="e.g. Read the news"/>
-                    <input id="newTaskDeadline" type="date" class="form-control col-sm-3" placeholder="e.g. 2017/02/15 "/>
+                    <input id="newTaskName" class="form-control col-sm-9" placeholder="To Do Task Description"/>
+                    <input id="newTaskDeadline" type="date" class="form-control col-sm-3" placeholder="Deadline"/>
                 </div>
 
                 <div class="row">
-                    <a id="btnSave" href="#" class="btn btn-outline-secondary">Save</a>
-                    <a id="btnCancel" href="#" class="btn btn-outline-secondary">Cancel</a>
+                    <a id="btnSaveTask" href="#" class="btn btn-outline-secondary">Save</a>
+                    <a id="btnCancelTask" href="#" class="btn btn-outline-secondary">Cancel</a>
                 </div>
 
             </div>
@@ -75,12 +90,16 @@
             <br>
 
             <p class="text-gray-dark">Tasks</p>
-            <div id="todoTasks"></div>
+            <div id="todoTasks">
+                <!--tasks-->
+            </div>
 
             <hr>
 
             <p class="text-gray-dark">Done Tasks</p>
-            <div id="doneTasks"></div>
+            <div id="doneTasks">
+                <!--completedTasks-->
+            </div>
 
         </div>
 
