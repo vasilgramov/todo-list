@@ -38,4 +38,11 @@ public class CategoryController {
         ViewCategory viewCategory = this.categoryService.addCategory(addCategory);
         return new ResponseEntity<ViewCategory>(viewCategory, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ViewCategory> deleteCategory(@PathVariable long id) {
+        this.categoryService.delete(id);
+
+        return new ResponseEntity<ViewCategory>(HttpStatus.OK);
+    }
 }

@@ -51,4 +51,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         return this.modelMapper.map(category, ViewCategory.class);
     }
+
+    @Override
+    public void delete(long id) {
+        this.categoryRepository.delete(id);
+    }
 }

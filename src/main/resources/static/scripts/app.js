@@ -39,32 +39,14 @@ function loadAllCategories() {
 }
 
 function appendCategories(categories) {
-    let categoriesUL = $('#categoriesUL');
 
-    // all
-    categoriesUL.append(
-        $('<li class="nav-item categoryLi"></li>')
-            .append($('<a class="nav-link active" href="#"></a>')
-                .text('All')
-                .click(selectCategory))
-            .append($('<div class="categoryEditDelete">')
-                .append($('<a href="#" class="edit">&#9998;</a>'))
-                .append($('<a href="#" class="delete">&#10006;</a>'))
-            )
-    );
+    appendCategory({name: 'All'});
 
-    // by category
+    let cUL = $('#categoriesUL');
+    cUL.find('li:first-child').find('a.nav-link').addClass('active');
+
     for (let c of categories) {
-        categoriesUL.append(
-            $('<li class="nav-item categoryLi"></li>')
-                .append($('<a class="nav-link" href="#"></a>')
-                    .text(c['name'])
-                    .click(selectCategory))
-                .append($('<div class="categoryEditDelete">')
-                    .append($('<a href="#" class="edit">&#9998;</a>'))
-                    .append($('<a href="#" class="delete">&#10006;</a>'))
-            )
-        );
+        appendCategory(c);
     }
 }
 
@@ -281,14 +263,55 @@ function addCategory(category) {
     });
 }
 
-function appendCategory(category) {
+function appendCategory(c) {
     let categoriesUL = $('#categoriesUL');
-    categoriesUL.append(
-        $('<li class="nav-item"></li>')
-            .append($('<a class="nav-link" href="#"></a>')
-                .text(category['name'])
-                .click(selectCategory))
-            .append($('<a href="#">Edit</a>'))
-            .append($('<a href="#">Delete</a>'))
+
+    if (c['name'] === 'All') {
+        categoriesUL.append(
+            $('<li class="nav-item categoryLi"></li>')
+                .append($('<a class="nav-link" href="#"></a>')
+                    .text(c['name'])
+                    .click(selectCategory))
         );
+    } else {
+        categoriesUL.append(
+            $('<li class="nav-item categoryLi"></li>')
+                .append($('<a class="nav-link" href="#"></a>')
+                    .text(c['name'])
+                    .attr('data-id', c['id'])
+                    .click(selectCategory))
+                .append($('<div class="categoryEditDelete">')
+                    .append($('<a href="#" class="edit">&#9998;</a>')
+                        .click(editCategory))
+                    .append($('<a href="#" class="delete">&#10006;</a>')
+                        .click(removeCategory))
+                )
+        );
+    }
 }
+
+
+function editCategory() {
+    let parent = $(this).parent().prev().parent();
+    let child = parent.html();
+    let categoryName = $(this).parent().prev().text();
+
+    
+}
+
+function removeCategory() {
+    let id = $(this).parent().prev().attr('data-id');
+    $(this).parent().prev().parent().remove();
+
+    deleteCategory(id);
+}
+
+function deleteCategory(id) {
+    $.ajax({
+        method: 'DELETE',
+        url: '/categories/delete/' + id,
+        error: displayError
+    });
+}
+
+
