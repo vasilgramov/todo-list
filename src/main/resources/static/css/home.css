@@ -177,3 +177,8 @@ a:focus, a:hover {
 .categoryEditDelete {
     display: none;
 }
+
+.categoryEdit {
+    position: relative;
+    left: 10px;
+}

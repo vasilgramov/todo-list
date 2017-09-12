@@ -296,7 +296,14 @@ function editCategory() {
     let child = parent.html();
     let categoryName = $(this).parent().prev().text();
 
-    
+    parent.empty();
+    parent
+        .append($('<input class="categoryEdit">')
+            .val(categoryName)
+            .on('keyup', function () {
+                
+            })
+        );
 }
 
 function removeCategory() {

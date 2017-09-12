@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 import com.app.models.bindingModels.AddCategory;
+import com.app.models.bindingModels.EditCategory;
 import com.app.models.viewModels.ViewCategory;
 import com.app.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class CategoryController {
     public ResponseEntity<ViewCategory> addCategory(@RequestBody AddCategory addCategory) {
         ViewCategory viewCategory = this.categoryService.addCategory(addCategory);
         return new ResponseEntity<ViewCategory>(viewCategory, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<ViewCategory> editCategory(@RequestParam EditCategory editCategory) {
+        return null;
     }
 
     @DeleteMapping("/delete/{id}")

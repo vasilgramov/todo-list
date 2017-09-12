@@ -1,16 +1,12 @@
 package com.app.models.bindingModels;
 
-import java.util.Date;
-
-public class UpdateTask {
+public class EditCategory {
 
     private long id;
 
     private String name;
 
-    private Date deadline;
-
-    public UpdateTask() {
+    public EditCategory() {
         super();
     }
 
@@ -28,13 +24,5 @@ public class UpdateTask {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getDeadline() {
-        return this.deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
     }
 }

@@ -1,7 +1,7 @@
 package com.app.controllers;
 
 import com.app.models.bindingModels.AddTask;
-import com.app.models.bindingModels.UpdateTask;
+import com.app.models.bindingModels.EditTask;
 import com.app.models.viewModels.ViewTask;
 import com.app.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class TaskController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity editTask(@RequestBody UpdateTask updateTask) {
+    public ResponseEntity editTask(@RequestBody EditTask updateTask) {
         this.taskService.updateTask(updateTask);
         return new ResponseEntity(HttpStatus.OK);
     }

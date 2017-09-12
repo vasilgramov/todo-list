@@ -3,7 +3,7 @@ package com.app.serivceImpls;
 import com.app.entities.Category;
 import com.app.entities.Task;
 import com.app.models.bindingModels.AddTask;
-import com.app.models.bindingModels.UpdateTask;
+import com.app.models.bindingModels.EditTask;
 import com.app.models.viewModels.ViewTask;
 import com.app.repositories.TaskRepository;
 import com.app.services.CategoryService;
@@ -71,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updateTask(UpdateTask updateTask) {
+    public void updateTask(EditTask updateTask) {
         Task task = this.taskRepository.findById(updateTask.getId());
 
         task.setName(updateTask.getName());
