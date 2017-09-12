@@ -157,3 +157,23 @@ a:focus, a:hover {
     position: relative;
     top: 10px;
 }
+
+.edit {
+    position: relative;
+    bottom: 40px;
+    left: 174px;
+}
+
+.delete {
+    position: relative;
+    bottom: 24px;
+    left: 161px;
+}
+
+.categoryLi {
+    height: 37px;
+}
+
+.categoryEditDelete {
+    display: none;
+}

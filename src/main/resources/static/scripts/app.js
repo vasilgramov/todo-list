@@ -43,19 +43,27 @@ function appendCategories(categories) {
 
     // all
     categoriesUL.append(
-        $('<li class="nav-item"></li>')
+        $('<li class="nav-item categoryLi"></li>')
             .append($('<a class="nav-link active" href="#"></a>')
                 .text('All')
                 .click(selectCategory))
+            .append($('<div class="categoryEditDelete">')
+                .append($('<a href="#" class="edit">&#9998;</a>'))
+                .append($('<a href="#" class="delete">&#10006;</a>'))
+            )
     );
 
     // by category
     for (let c of categories) {
         categoriesUL.append(
-            $('<li class="nav-item"></li>')
+            $('<li class="nav-item categoryLi"></li>')
                 .append($('<a class="nav-link" href="#"></a>')
                     .text(c['name'])
                     .click(selectCategory))
+                .append($('<div class="categoryEditDelete">')
+                    .append($('<a href="#" class="edit">&#9998;</a>'))
+                    .append($('<a href="#" class="delete">&#10006;</a>'))
+            )
         );
     }
 }
@@ -64,6 +72,7 @@ function selectCategory() {
     deselectSelectedCategory();
 
     $(this).addClass('active');
+    $(this).next().show();
 
     let categoryName = $(this).text();
     getTasksByCategory(categoryName);
@@ -84,7 +93,9 @@ function getTasksByCategory(category) {
 }
 
 function deselectSelectedCategory() {
-    $('#categoriesUL').find('li .active').removeClass('active');
+    let categoriesUL = $('#categoriesUL');
+    categoriesUL.find('li .active').next().hide();
+    categoriesUL.find('li .active').removeClass('active');
 }
 
 function createTask() {
@@ -277,5 +288,7 @@ function appendCategory(category) {
             .append($('<a class="nav-link" href="#"></a>')
                 .text(category['name'])
                 .click(selectCategory))
-    );
+            .append($('<a href="#">Edit</a>'))
+            .append($('<a href="#">Delete</a>'))
+        );
 }
