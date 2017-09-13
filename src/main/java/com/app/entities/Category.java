@@ -1,6 +1,7 @@
 package com.app.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -9,6 +10,8 @@ public class Category {
     private long id;
 
     private String name;
+
+    private Set<Task> tasks;
 
     public Category() {
         super();
@@ -32,5 +35,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    public Set<Task> getTasks() {
+        return this.tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 }

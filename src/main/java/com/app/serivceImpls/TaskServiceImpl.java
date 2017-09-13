@@ -71,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updateTask(EditTask updateTask) {
+    public void editTask(EditTask updateTask) {
         Task task = this.taskRepository.findById(updateTask.getId());
 
         task.setName(updateTask.getName());

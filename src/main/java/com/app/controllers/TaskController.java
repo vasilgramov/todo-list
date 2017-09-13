@@ -48,7 +48,7 @@ public class TaskController {
 
     @PutMapping("/edit")
     public ResponseEntity editTask(@RequestBody EditTask updateTask) {
-        this.taskService.updateTask(updateTask);
+        this.taskService.editTask(updateTask);
         return new ResponseEntity(HttpStatus.OK);
     }
 

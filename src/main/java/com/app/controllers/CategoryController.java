@@ -40,9 +40,9 @@ public class CategoryController {
         return new ResponseEntity<ViewCategory>(viewCategory, HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<ViewCategory> editCategory(@RequestParam EditCategory editCategory) {
-        return null;
+    @PutMapping("/edit")
+    public ResponseEntity<ViewCategory> editCategory(@RequestBody EditCategory editCategory) {
+        return new ResponseEntity<ViewCategory>(this.categoryService.editCategory(editCategory), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

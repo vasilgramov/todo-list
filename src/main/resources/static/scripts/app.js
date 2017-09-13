@@ -13,6 +13,7 @@ $(() => {
 
     hideTaskDiv();
     hideCategoryDiv();
+
 });
 
 function hideTaskDiv() {
@@ -51,6 +52,8 @@ function appendCategories(categories) {
 }
 
 function selectCategory() {
+    endEditing();
+
     deselectSelectedCategory();
 
     $(this).addClass('active');
@@ -290,20 +293,76 @@ function appendCategory(c) {
     }
 }
 
-
 function editCategory() {
-    let parent = $(this).parent().prev().parent();
-    let child = parent.html();
+
+    let parent = $(this).parent().parent();
+
+    // let child = parent.html();
+
+    let categoryId = $(this).parent().prev().attr('data-id');
     let categoryName = $(this).parent().prev().text();
+
+    sessionStorage.setItem('categoryName', categoryName);
 
     parent.empty();
     parent
-        .append($('<input class="categoryEdit">')
+        .append($('<input id="editing" class="categoryEdit">')
+            .attr('data-id', categoryId)
             .val(categoryName)
-            .on('keyup', function () {
-                
+            .on('keyup', function (e) {
+
+                if (e.which === 27) {
+                    endEditing();
+                } else if (e.which === 13) {
+
+                    let newCategoryName = $(this).val();
+                    let editedCategory = {
+                            id: categoryId,
+                            name: newCategoryName
+                    };
+                    
+                    $.ajax({
+                        method: 'PUT',
+                        url: '/categories/edit',
+                        data: JSON.stringify(editedCategory),
+                        contentType: 'application/json',
+                        success: endEditing,
+                        error: displayError
+                    });
+                }
             })
         );
+}
+
+function endEditing(editedCategory) {
+    let input = $('#categoriesUL').find('#editing');
+
+    if (input.val() !== undefined) {
+        let id = input.attr('data-id');
+        let name = sessionStorage.getItem('categoryName');
+
+        if (editedCategory !== null) {
+            id = editedCategory['id'];
+            name = editedCategory['name'];
+        }
+
+        let selector = input.parent();
+        selector.empty();
+
+        selector
+            .append($('<a class="nav-link active" href="#"></a>')
+                .text(name)
+                .attr('data-id', id)
+                .click(selectCategory))
+            .append($('<div class="categoryEditDelete">')
+                .append($('<a href="#" class="edit">&#9998;</a>')
+                    .click(editCategory))
+                .append($('<a href="#" class="delete">&#10006;</a>')
+                    .click(removeCategory))
+            );
+
+        return id;
+    }
 }
 
 function removeCategory() {

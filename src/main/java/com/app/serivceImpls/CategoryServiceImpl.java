@@ -2,6 +2,7 @@ package com.app.serivceImpls;
 
 import com.app.entities.Category;
 import com.app.models.bindingModels.AddCategory;
+import com.app.models.bindingModels.EditCategory;
 import com.app.models.viewModels.ViewCategory;
 import com.app.repositories.CategoryRepository;
 import com.app.services.CategoryService;
@@ -55,5 +56,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(long id) {
         this.categoryRepository.delete(id);
+    }
+
+    @Override
+    public ViewCategory editCategory(EditCategory editCategory) {
+        Category c = this.categoryRepository.findById(editCategory.getId());
+
+        c.setName(editCategory.getName());
+        this.categoryRepository.saveAndFlush(c);
+
+        ViewCategory viewCategory = this.modelMapper.map(editCategory, ViewCategory.class);
+        return viewCategory;
     }
 }
