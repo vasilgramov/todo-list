@@ -8,6 +8,8 @@ $(() => {
     $('#btnSaveCategory').click(createCategory);
     $('#btnCancelCategory').click(hideCategoryDiv);
 
+    $('#searchInput').on('input', searchBy);
+
     loadAllCategories();
     loadAllTasks();
 
@@ -173,6 +175,7 @@ function getSelectedCategory() {
 }
 
 function loadTasksByCategory(tasks) {
+    console.info()
     let tasksSelector = $('#todoTasks');
     tasksSelector.empty();
 
@@ -182,8 +185,6 @@ function loadTasksByCategory(tasks) {
 }
 
 function editTask() {
-    console.log('EDITING');
-
     let currentDOMTask = $(this);
 
     let taskId = currentDOMTask.attr('data-id');
@@ -386,5 +387,23 @@ function deleteCategory(id) {
         error: displayError
     });
 }
+
+function searchBy() {
+    let selectedCategory = getSelectedCategory();
+    let taskInput = $('#searchInput').val();
+
+    getTasksBySearchedInput(selectedCategory, taskInput);
+}
+
+function getTasksBySearchedInput(category, substring) {
+    $.ajax({
+        method: 'GET',
+        url: `/tasks/search?category=${category}&task=${substring}`,
+        success: loadTasksByCategory,
+        error: displayError
+    });
+}
+
+
 
 

@@ -84,4 +84,23 @@ public class TaskServiceImpl implements TaskService {
     public void deleteById(long taskId) {
         this.taskRepository.delete(taskId);
     }
+
+    @Override
+    public List<ViewTask> getByCategoryAndSubstring(String category, String substring) {
+        List<Task> tasks = new ArrayList<>();
+
+        if (category.equals("All")) {
+            tasks = this.taskRepository.findAllByName(substring);
+        } else {
+            long id = this.categoryService.categoryByName(category).getId();
+            tasks = this.taskRepository.findAllByCategoryIdAndName(id, substring);
+        }
+
+        List<ViewTask> result = new ArrayList<>();
+        for (Task task : tasks) {
+            result.add(this.modelMapper.map(task, ViewTask.class));
+        }
+
+        return result;
+    }
 }

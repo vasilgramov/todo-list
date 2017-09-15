@@ -58,4 +58,12 @@ public class TaskController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ViewTask>> getTasksByCategoryAndSubstring(
+            @RequestParam("category") String categoryName, @RequestParam("task") String substring) {
+        List<ViewTask> viewTasks = this.taskService.getByCategoryAndSubstring(categoryName, substring);
+
+        return new ResponseEntity<List<ViewTask>>(viewTasks, HttpStatus.OK);
+    }
 }

@@ -17,4 +17,6 @@ public interface TaskService {
     void editTask(EditTask updateTask);
 
     void deleteById(long taskId);
+
+    List<ViewTask> getByCategoryAndSubstring(String categoryName, String substring);
 }
