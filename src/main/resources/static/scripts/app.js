@@ -18,6 +18,9 @@ $(() => {
 
 function hideTaskDiv() {
     $('#taskDiv').hide();
+
+    $('#newTaskName').val('');
+    $('#newTaskDeadline').val('');
 }
 
 function showTaskDiv() {
@@ -239,6 +242,7 @@ function showCategoryDiv() {
 
 function hideCategoryDiv() {
     $('#categoryDiv').hide();
+    $('#newCategoryName').val('');
 }
 
 function createCategory() {
@@ -370,12 +374,15 @@ function removeCategory() {
     $(this).parent().prev().parent().remove();
 
     deleteCategory(id);
+
+    $('#categoriesUL').find('li:first-child').find('a.nav-link').addClass('active');
 }
 
 function deleteCategory(id) {
     $.ajax({
         method: 'DELETE',
         url: '/categories/delete/' + id,
+        success: loadAllTasks,
         error: displayError
     });
 }
