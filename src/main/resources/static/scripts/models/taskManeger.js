@@ -7,8 +7,7 @@ let taskManager = (() => {
     }
 
     function loadTasksByCategory(tasks) {
-        let tasksSelector = $('#todoTasks');
-        tasksSelector.empty();
+        $('#allTasks').empty();
 
         for (let task of tasks) {
             appendTask(task);
@@ -17,6 +16,23 @@ let taskManager = (() => {
 
     function showTaskDiv() {
         $('#taskDiv').show();
+
+        requester.get('/categories')
+            .then(appendToSelect)
+            .catch(displayError);
+
+        categoryManager.hideCategoryDiv();
+    }
+
+    function appendToSelect(categories) {
+        let selector = $('#newTaskCategory');
+        selector.empty();
+        selector.append($('<option>').text('None'));
+
+        for (let c of categories) {
+            selector
+                .append($('<option>').text(c['name']));
+        }
     }
 
     function hideTaskDiv() {
@@ -28,24 +44,21 @@ let taskManager = (() => {
 
     function createTask() {
         let taskNameInput = $('#newTaskName');
-        let taskDeadlineInput = $('#newTaskDeadline');
+        let taskDueDateInput = $('#newTaskDueDate');
 
         let taskName = taskNameInput.val();
-        let taskDeadline = taskDeadlineInput.val();
-        let taskCategoryName = categoryManager.getSelectedCategory();
+        let taskCreatedOn = new Date();
+        let taskDueDate = taskDueDateInput.val();
+        let taskCategoryName = $('#newTaskCategory').find(':selected').text();
 
         taskNameInput.val('');
-        taskDeadlineInput.val('');
-
-        if (taskCategoryName === '') {
-            displayError('Select a category!');
-            return;
-        }
+        taskDueDateInput.val('');
 
         let todoTask = {
             name: taskName,
-            deadline: taskDeadline,
-            category: taskCategoryName
+            createdOn: taskCreatedOn,
+            dueDate: taskDueDate,
+            categoryName: taskCategoryName,
         };
 
         hideTaskDiv();
@@ -70,30 +83,24 @@ let taskManager = (() => {
     }
 
     function appendTask(task) {
-        let id = task['id'];
-        let name = task['name'];
-        let deadline = formatDate(task['deadline']);
 
-        $('#todoTasks')
+        $('#allTasks')
             .append(
-                $('<div>')
-                    .attr('data-id', id)
-                    .addClass('row')
-                    .append(
-                        $('<input type="checkbox">')
-                            .addClass('checkbox')
-                            .click(() => alert('CLICKED'))
+                $('<tr>')
+                    .attr('data-id', task['id'])
+                    .append($('<th>')
+                        .append($('<input type="checkbox">')
+                                    .click(() => alert('CLICKED')))
                     )
-                    .append(
-                        $('<input/>')
-                            .addClass('updateNameClass form-control col-sm-5')
-                            .val(name))
-                    .append(
-                        $('<input/>')
-                            .addClass('updateDeadlineClass form-control col-sm-3')
-                            .val(deadline))
-                    .on('change', editTask)
-                    .on('keyup', removeTask)
+                    .append($('<td>').text(task['name']))
+                    .append($('<td>').text(formatDate(task['createdDate'])))
+                    .append($('<td>').text(formatDate(task['dueDate'])))
+                    .append($('<td>').text(task['categoryName']))
+                    .append($('<td>')
+                        .append($('<a href="#">Edit</a>'))
+                        .append($('<span> | </span>'))
+                        .append($('<a href="#">Delete</a>'))
+                    )
             );
     }
 

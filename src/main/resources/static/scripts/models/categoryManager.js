@@ -20,6 +20,7 @@ let categoryManager = (() => {
 
     function showCategoryDiv() {
         $('#categoryDiv').show();
+        taskManager.hideTaskDiv();
     }
 
     function hideCategoryDiv() {

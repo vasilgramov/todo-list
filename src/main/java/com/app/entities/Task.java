@@ -11,7 +11,9 @@ public class Task {
 
     private String name;
 
-    private Date deadline;
+    private Date createdOn;
+
+    private Date dueDate;
 
     private Category category;
 
@@ -39,13 +41,22 @@ public class Task {
         this.name = name;
     }
 
-    @Column(name = "deadline")
-    public Date getDeadline() {
-        return this.deadline;
+    @Column(name = "created_on")
+    public Date getCreatedOn() {
+        return this.createdOn;
     }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    @Column(name = "due_date")
+    public Date getDueDate() {
+        return this.dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     @ManyToOne

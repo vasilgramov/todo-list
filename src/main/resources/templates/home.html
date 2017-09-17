@@ -76,15 +76,24 @@
 
             <div id="taskDiv">
 
-                <div class="row">
-                    <input id="newTaskName" class="form-control col-sm-6" placeholder="To Do Task Description"/>
-                    <input id="newTaskDeadline" type="date" class="form-control col-sm-3" placeholder="Deadline"/>
-                </div>
+                <span class="taskDescription">Task</span>
+                <span class="dueDate">Due Date</span>
+                <span class="category">Category</span>
 
-                <div class="row">
-                    <a id="btnSaveTask" href="#" class="btn btn-outline-secondary">Add</a>
-                    <a id="btnCancelTask" href="#" class="btn btn-outline-secondary">Cancel</a>
-                </div>
+                <div></div>
+
+                <input id="newTaskName" class="form-control col-sm-4" placeholder="e.g. Work">
+                <input id="newTaskDueDate" type="date" class="form-control col-sm-2" placeholder="Due Date">
+                <select id="newTaskCategory" class="form-control col-sm-3">
+
+                    <!--categories-->
+
+                </select>
+
+                <div></div>
+
+                <a id="btnSaveTask" href="#" class="btn btn-outline-secondary">Add</a>
+                <a id="btnCancelTask" href="#" class="btn btn-outline-secondary">Cancel</a>
 
             </div>
 
@@ -92,8 +101,30 @@
             <br>
 
             <p class="text-gray-dark">Tasks</p>
-            <div id="todoTasks">
-                <!--tasks-->
+
+            <div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Task</th>
+                        <th>Created</th>
+                        <th>Due Date</th>
+                        <th>Category</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="allTasks">
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
 
             <hr>

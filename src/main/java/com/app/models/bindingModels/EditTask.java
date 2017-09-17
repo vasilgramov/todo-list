@@ -8,7 +8,11 @@ public class EditTask {
 
     private String name;
 
-    private Date deadline;
+    private Date createdOn;
+
+    private Date dueDate;
+
+    private String categoryName;
 
     public EditTask() {
         super();
@@ -30,11 +34,27 @@ public class EditTask {
         this.name = name;
     }
 
-    public Date getDeadline() {
-        return this.deadline;
+    public Date getCreatedOn() {
+        return this.createdOn;
     }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getDueDate() {
+        return this.dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getCategoryName() {
+        return this.categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

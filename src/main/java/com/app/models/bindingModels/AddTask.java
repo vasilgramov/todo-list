@@ -6,9 +6,11 @@ public class AddTask {
 
     private String name;
 
-    private Date deadline;
+    private Date createdOn;
 
-    private String category;
+    private Date dueDate;
+
+    private String categoryName;
 
     public AddTask() {
         super();
@@ -22,19 +24,27 @@ public class AddTask {
         this.name = name;
     }
 
-    public Date getDeadline() {
-        return this.deadline;
+    public Date getCreatedOn() {
+        return this.createdOn;
     }
 
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
     }
 
-    public String getCategory() {
-        return this.category;
+    public Date getDueDate() {
+        return this.dueDate;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getCategoryName() {
+        return this.categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

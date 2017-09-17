@@ -182,3 +182,23 @@ a:focus, a:hover {
     position: relative;
     left: 10px;
 }
+
+.form-control {
+    display: inline;
+}
+
+.taskDescription {
+    position: relative;
+    left: 10px;
+}
+
+.dueDate {
+    position: relative;
+    left: 333px;
+}
+
+.category {
+    position: relative;
+    left: 441px;
+}
+

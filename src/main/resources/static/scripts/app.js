@@ -17,8 +17,8 @@ $(() => {
     taskManager.hideTaskDiv();
 });
 
-
 // TODO: in a handler ???
+
 function displayError(message) {
     let errBox = $('#errorBox');
     errBox.text(message).show();

@@ -36,9 +36,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ViewTask addTask(AddTask addTask) {
-        Category categoryId = this.categoryService.categoryByName(addTask.getCategory());
+        Category category = this.categoryService.categoryByName(addTask.getCategoryName());
         Task task = this.modelMapper.map(addTask, Task.class);
-        task.setCategory(categoryId);
+        task.setCategory(category);
         this.taskRepository.saveAndFlush(task);
 
         ViewTask viewTask = this.modelMapper.map(task, ViewTask.class);
@@ -71,11 +71,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void editTask(EditTask updateTask) {
-        Task task = this.taskRepository.findById(updateTask.getId());
+    public void editTask(EditTask editTask) {
+        Task task = this.taskRepository.findById(editTask.getId());
 
-        task.setName(updateTask.getName());
-        task.setDeadline(updateTask.getDeadline());
+        task.setName(editTask.getName());
+        task.setDueDate(editTask.getDueDate());
+        task.setCategory(this.categoryService.categoryByName(editTask.getCategoryName()));
 
         this.taskRepository.saveAndFlush(task);
     }
