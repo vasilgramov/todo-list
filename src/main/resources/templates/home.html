@@ -31,13 +31,52 @@
 
                 <!--<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>-->
 
-            <!--</form>-->
+                <!--</form>-->
             </div>
         </div>
     </nav>
 </header>
 
 <main>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content"
+                 style="
+                    width: 850px;
+                    height: 237px;
+                    position: relative;
+                    left: -145px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Task</h4>
+                </div>
+                <div class="modal-body">
+                        <span class="taskDescription">Task</span>
+                        <span class="dueDate">Due Date</span>
+                        <span class="category">Category</span>
+
+                        <div></div>
+
+                        <input id="editTaskName" class="form-control col-sm-5" placeholder="e.g. Work">
+                        <input id="editTaskDueDate" type="date" class="form-control col-sm-3" placeholder="Due Date">
+                        <select id="editTaskCategory" class="form-control col-sm-3">
+
+                            <!--categories-->
+
+                        </select>
+
+                </div>
+                <div class="modal-footer">
+                    <a id="btnEditTask" href="#" class="btn btn-outline-secondary">Add</a>
+                    <a id="btnCancelEditTask" href="#" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <div class="container-fluid">
 
@@ -116,12 +155,7 @@
                     </tr>
                     </thead>
                     <tbody id="allTasks">
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
+
                     </tbody>
                 </table>
 
@@ -141,6 +175,7 @@
     </div>
 
 </main>
+
 
 </body>
 

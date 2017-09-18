@@ -97,42 +97,64 @@ let taskManager = (() => {
                     .append($('<td>').text(formatDate(task['dueDate'])))
                     .append($('<td>').text(task['categoryName']))
                     .append($('<td>')
-                        .append($('<a href="#">Edit</a>'))
+                        .append($('<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">&#9998;</button>').click(showEditModal))
                         .append($('<span> | </span>'))
-                        .append($('<a href="#">Delete</a>'))
-                    )
+                        .append($('<a href="#">&#10005;</a>').click(removeTask)))
             );
     }
 
-    function editTask() {
+    function showEditModal() {
         let currentDOMTask = $(this);
+        let categoriesSelector = $('#editTaskCategory');
 
-        let taskId = currentDOMTask.attr('data-id');
-        let taskName = currentDOMTask.find('.updateNameClass').val();
-        let taskDeadline = parseDate(currentDOMTask.find('.updateDeadlineClass').val());
+        let taskId = currentDOMTask.parent().parent().attr('data-id');
+        localStorage.setItem('taskId', taskId);
 
-        let toDoItem = {
-            id: taskId,
-            name: taskName,
-            deadline: taskDeadline
+        let taskName = currentDOMTask.parent().prev().prev().prev().prev().text();
+        let createdOn = (currentDOMTask.parent().prev().prev().prev().text());
+        localStorage.setItem('taskCreatedOn', createdOn);
+
+        categoriesSelector.empty();
+        categoriesSelector.append($('<option>').text('None'));
+
+        requester.get('/categories')
+            .then(function (categories) {
+
+                $('#editTaskName').val(taskName);
+
+                for (let c of categories) {
+                    categoriesSelector
+                        .append($('<option>').text(c['name']));
+                }
+            }).catch(displayError);
+    }
+
+    function removeTask() {
+        let domTask = $(this);
+        let taskId = domTask.attr('data-id');
+
+        deleteTask(taskId);
+
+        domTask.remove();
+    }
+
+    function updateTask() {
+        let editedTaskId = localStorage.getItem('taskId');
+        let editedTaskName = $('#editTaskName').val();
+        let editedTaskCreatedOn = parseDate(localStorage.getItem('taskCreatedOn'));
+        let editedTaskDueDate = $('#editTaskDueDate').val();
+        let editedTaskCategory = $('#editTaskCategory').find(':selected');
+
+        let task = {
+            id: editedTaskId,
+            name: editedTaskName,
+            createdOn: editedTaskCreatedOn,
+            dueDate: editedTaskDueDate,
+            categoryName: editedTaskCategory
         };
 
-        updateTask(toDoItem);
-    }
-
-    function removeTask(e) {
-        if (e.which === 27) {
-            let domTask = $(this);
-            let taskId = domTask.attr('data-id');
-
-            deleteTask(taskId);
-
-            domTask.remove();
-        }
-    }
-
-    function updateTask(item) {
-        requester.update('/tasks/edit', item)
+        console.log(task);
+        requester.update('/tasks/edit', task)
             .catch(displayError);
     }
 
@@ -179,7 +201,8 @@ let taskManager = (() => {
         hideTaskDiv,
         createTask,
         searchBy,
-        getTasksByCategory
+        getTasksByCategory,
+        updateTask
     };
 
 })();

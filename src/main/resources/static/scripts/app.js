@@ -8,6 +8,8 @@ $(() => {
     $('#btnSaveTask').click(taskManager.createTask);
     $('#btnCancelTask').click(taskManager.hideTaskDiv);
 
+    $('#btnEditTask').click(taskManager.updateTask);
+
     $('#searchInput').on('input', taskManager.searchBy);
 
     categoryManager.loadAllCategories();
