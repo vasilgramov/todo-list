@@ -61,6 +61,8 @@ let taskManager = (() => {
             categoryName: taskCategoryName,
         };
 
+        console.log(todoTask);
+
         hideTaskDiv();
         addTask(todoTask);
     }
@@ -142,8 +144,8 @@ let taskManager = (() => {
         let editedTaskId = localStorage.getItem('taskId');
         let editedTaskName = $('#editTaskName').val();
         let editedTaskCreatedOn = parseDate(localStorage.getItem('taskCreatedOn'));
-        let editedTaskDueDate = $('#editTaskDueDate').val();
-        let editedTaskCategory = $('#editTaskCategory').find(':selected');
+        let editedTaskDueDate = parseDate($('#editTaskDueDate').val());
+        let editedTaskCategory = $('#editTaskCategory').find(':selected').text();
 
         let task = {
             id: editedTaskId,
@@ -182,14 +184,21 @@ let taskManager = (() => {
         let day = date.getDate();
         let month = date.getMonth() + 1;
         let year = date.getFullYear();
+
         return year + '/' + month + '/' + day;
     }
 
     function parseDate(dateAsString) {
         let tokens = dateAsString.split('/');
+        if (tokens.length === 1) {
+            tokens = dateAsString.split('-');
+        }
+
         let year = tokens[0];
         let month = tokens[1] - 1;
         let day = tokens[2];
+
+        console.log(tokens);
 
         return new Date(year, month, day);
     }
