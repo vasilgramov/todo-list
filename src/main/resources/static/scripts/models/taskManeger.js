@@ -155,8 +155,10 @@ let taskManager = (() => {
             categoryName: editedTaskCategory
         };
 
-        console.log(task);
+        $('#btnCancelEditTask').click();
+
         requester.update('/tasks/edit', task)
+            .then(loadAllTasks)
             .catch(displayError);
     }
 
@@ -197,8 +199,6 @@ let taskManager = (() => {
         let year = tokens[0];
         let month = tokens[1] - 1;
         let day = tokens[2];
-
-        console.log(tokens);
 
         return new Date(year, month, day);
     }
