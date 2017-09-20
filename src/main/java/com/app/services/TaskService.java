@@ -19,4 +19,6 @@ public interface TaskService {
     void deleteById(long taskId);
 
     List<ViewTask> getByCategoryAndSubstring(String categoryName, String substring);
+
+    void completeTask(long id);
 }

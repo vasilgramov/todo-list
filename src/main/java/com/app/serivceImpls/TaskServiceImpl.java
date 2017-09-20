@@ -104,4 +104,12 @@ public class TaskServiceImpl implements TaskService {
 
         return result;
     }
+
+    @Override
+    public void completeTask(long id) {
+        Task one = this.taskRepository.findById(id);
+
+        one.setCompleted(!one.isCompleted());
+        this.taskRepository.saveAndFlush(one);
+    }
 }

@@ -17,6 +17,8 @@ public class Task {
 
     private Category category;
 
+    private boolean isCompleted;
+
     public Task() {
         super();
     }
@@ -57,6 +59,15 @@ public class Task {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    @Column(name = "is_completed")
+    public boolean isCompleted() {
+        return this.isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     @ManyToOne

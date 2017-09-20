@@ -14,6 +14,8 @@ public class EditTask {
 
     private String categoryName;
 
+    private boolean isCompleted;
+
     public EditTask() {
         super();
     }
@@ -56,5 +58,13 @@ public class EditTask {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public boolean isCompleted() {
+        return this.isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }

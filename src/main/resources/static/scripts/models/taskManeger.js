@@ -1,6 +1,8 @@
 let taskManager = (() => {
 
     function loadAllTasks() {
+        selectAllCategories();
+        
         requester.get('/tasks')
             .then(loadTasksByCategory)
             .catch(displayError);
@@ -8,6 +10,7 @@ let taskManager = (() => {
 
     function loadTasksByCategory(tasks) {
         $('#allTasks').empty();
+        $('#doneTasks').empty();
 
         for (let task of tasks) {
             appendTask(task);
@@ -48,7 +51,7 @@ let taskManager = (() => {
 
         let taskName = taskNameInput.val();
         let taskCreatedOn = new Date();
-        let taskDueDate = taskDueDateInput.val();
+        let taskDueDate = taskDueDateInput.val() === '' ? new Date() : taskDueDateInput.val();
         let taskCategoryName = $('#newTaskCategory').find(':selected').text();
 
         taskNameInput.val('');
@@ -60,8 +63,6 @@ let taskManager = (() => {
             dueDate: taskDueDate,
             categoryName: taskCategoryName,
         };
-
-        console.log(todoTask);
 
         hideTaskDiv();
         addTask(todoTask);
@@ -85,24 +86,46 @@ let taskManager = (() => {
     }
 
     function appendTask(task) {
+        if (task['completed'] === false) {
+            $('#allTasks')
+                .append(
+                    $('<tr>')
+                        .attr('data-id', task['id'])
+                        .append($('<th>')
+                            .append($('<input type="checkbox">')
+                                .click(checkTask)))
+                        .append($('<td>').text(task['name']))
+                        .append($('<td>').text(formatDate(task['createdDate'])))
+                        .append($('<td>').text(formatDate(task['dueDate'])))
+                        .append($('<td>').text(task['categoryName']))
+                        .append($('<td>')
+                            .append($('<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">&#9998;</button>')
+                                .click(showEditModal))
+                            .append($('<span> | </span>'))
+                            .append($('<button type="button" class="btn btn-danger btn-lg">&#10005;</button>')
+                                .click(removeTask)))
+                );
+        } else {
+            $('#doneTasks')
+                .append(
+                    $('<tr>')
+                        .attr('data-id', task['id'])
+                        .append($('<th>')
+                            .append($('<input type="checkbox">')
+                                .click(checkTask)))
+                        .append($('<td>').text(task['name']))
+                        .append($('<td>').text(formatDate(task['createdDate'])))
+                        .append($('<td>').text(formatDate(task['dueDate'])))
+                        .append($('<td>').text(task['categoryName']))
+                );
+        }
+    }
 
-        $('#allTasks')
-            .append(
-                $('<tr>')
-                    .attr('data-id', task['id'])
-                    .append($('<th>')
-                        .append($('<input type="checkbox">')
-                                    .click(() => alert('CLICKED')))
-                    )
-                    .append($('<td>').text(task['name']))
-                    .append($('<td>').text(formatDate(task['createdDate'])))
-                    .append($('<td>').text(formatDate(task['dueDate'])))
-                    .append($('<td>').text(task['categoryName']))
-                    .append($('<td>')
-                        .append($('<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">&#9998;</button>').click(showEditModal))
-                        .append($('<span> | </span>'))
-                        .append($('<a href="#">&#10005;</a>').click(removeTask)))
-            );
+    function checkTask() {
+        let id = $(this).parent().parent().attr('data-id');
+
+        requester.update('/tasks/complete/' + id)
+            .then(loadAllTasks);
     }
 
     function showEditModal() {
@@ -132,12 +155,19 @@ let taskManager = (() => {
     }
 
     function removeTask() {
-        let domTask = $(this);
+        let domTask = $(this).parent().parent();
         let taskId = domTask.attr('data-id');
 
         deleteTask(taskId);
 
         domTask.remove();
+    }
+
+    function selectAllCategories() {
+        let categories = $('#categoriesUL');
+        categories.find('a.nav-link').next().css('display', 'none');
+        categories.find('a.nav-link').removeClass('active');
+        categories.find('li:first-child').find('a.nav-link').addClass('active');
     }
 
     function updateTask() {

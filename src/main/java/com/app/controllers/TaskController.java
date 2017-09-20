@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.View;
 import java.util.List;
 
 @Controller
@@ -65,5 +66,12 @@ public class TaskController {
         List<ViewTask> viewTasks = this.taskService.getByCategoryAndSubstring(categoryName, substring);
 
         return new ResponseEntity<List<ViewTask>>(viewTasks, HttpStatus.OK);
+    }
+
+    @PutMapping("/complete/{id}")
+    public ResponseEntity<ViewTask> completeTask(@PathVariable long id) {
+        this.taskService.completeTask(id);
+
+        return new ResponseEntity<ViewTask>(HttpStatus.OK);
     }
 }
