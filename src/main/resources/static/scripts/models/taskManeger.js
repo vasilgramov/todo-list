@@ -111,12 +111,9 @@ let taskManager = (() => {
                     $('<tr>')
                         .attr('data-id', task['id'])
                         .append($('<th>')
-                            .append($('<input type="checkbox">')
+                            .append($('<input type="checkbox" checked>')
                                 .click(checkTask)))
-                        .append($('<td>').text(task['name']))
-                        .append($('<td>').text(formatDate(task['createdDate'])))
-                        .append($('<td>').text(formatDate(task['dueDate'])))
-                        .append($('<td>').text(task['categoryName']))
+                        .append($('<td>').append($('<strike>').text(task['name'] + ' | ' + task['categoryName'])))
                 );
         }
     }
@@ -232,6 +229,16 @@ let taskManager = (() => {
 
         return new Date(year, month, day);
     }
+    
+    function toggle() {
+        let selector = $('#doneTasksDiv');
+        let css = selector.css('display');
+        if (css === 'none') {
+            selector.show();
+        } else {
+            selector.hide();
+        }
+    }
 
     return {
         loadAllTasks,
@@ -241,7 +248,8 @@ let taskManager = (() => {
         createTask,
         searchBy,
         getTasksByCategory,
-        updateTask
+        updateTask,
+        toggle
     };
 
 })();
