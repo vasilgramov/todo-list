@@ -175,6 +175,7 @@ let categoryManager = (() => {
                         .click(categoryManager.removeCategory))
                 );
 
+            taskManager.loadAllTasks();
             return id;
         }
     }
@@ -187,7 +188,8 @@ let categoryManager = (() => {
         selectCategory,
         removeCategory,
         editCategory,
-        getSelectedCategory
+        getSelectedCategory,
+        deselectSelectedCategory
     };
 
 })();

@@ -1,6 +1,7 @@
 let taskManager = (() => {
 
     function loadAllTasks() {
+        categoryManager.deselectSelectedCategory();
         selectAllCategories();
         
         requester.get('/tasks')
@@ -171,7 +172,7 @@ let taskManager = (() => {
         let editedTaskId = localStorage.getItem('taskId');
         let editedTaskName = $('#editTaskName').val();
         let editedTaskCreatedOn = parseDate(localStorage.getItem('taskCreatedOn'));
-        let editedTaskDueDate = parseDate($('#editTaskDueDate').val());
+        let editedTaskDueDate = ($('#editTaskDueDate').val() === '' ? new Date : $('#editTaskDueDate').val());
         let editedTaskCategory = $('#editTaskCategory').find(':selected').text();
 
         let task = {

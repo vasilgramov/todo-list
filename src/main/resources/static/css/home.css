@@ -78,7 +78,7 @@ a {
 }
 
 a:focus, a:hover {
-    color: crimson;
+    color: #245269;
 }
 
 #newInputItem {
