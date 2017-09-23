@@ -1,3 +1,3 @@
 # todo-list
 
-<iframe src='https://gfycat.com/ifr/ScaredBruisedFlycatcher' frameborder='0' scrolling='no' width='1092' height='614' allowfullscreen></iframe>
+A simple Spring Boot restful service ToDo list application for managing your taksk. You can see a demo of it here: https://youtu.be/4mwkbFFuJ4
